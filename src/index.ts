@@ -2,16 +2,38 @@ import express from "express";
 import dotenv from "dotenv";
 import { chatHistoryAnalyzer } from "./llm/client";
 import { conversation } from "./internal/conversation";
+import { Conversation } from "./internal/types";
 // import fs from "fs";
 // Load environment variables
 dotenv.config({ path: ".env" });
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get("/", async (req: express.Request, res: express.Response) => {
-  const result = await chatHistoryAnalyzer(conversation);
+app.get("/", (req: express.Request, res: express.Response) => {
+  res.send("Hello World");
+});
 
-  res.send(result);
+app.post("/analyze", async (req: express.Request, res: express.Response) => {
+  if (!req.body.conversation || req.body.conversation.length === 0) {
+    res.status(400).json({
+      data: null,
+      success: false,
+      error: "No conversation provided",
+    });
+
+    return;
+  }
+
+  const result = await chatHistoryAnalyzer(
+    req.body.conversation as Conversation[]
+  );
+
+  res.json({
+    data: result,
+    success: true,
+  });
 });
 
 app.listen(3000, () => {
