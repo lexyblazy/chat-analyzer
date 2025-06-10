@@ -8,3 +8,18 @@ export const formatConversation = (conversation: Conversation[]): string => {
     }))
   );
 };
+
+export const formatKeywords = (keywords: string) => {
+  return keywords
+    .split("\n")
+    .map((keyword) => keyword.replace(/^"|"$/g, ""))
+    .filter((keyword) => keyword !== "")
+    .map((keyword) => {
+      return {
+        value: keyword,
+        count: Math.floor(Math.random() * 1000),
+        type: keyword.split(" ").length > 1 ? "phrase" : "word",
+        trend: ["up", "down", "stable"][Math.floor(Math.random() * 3)],
+      };
+    });
+};

@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { chatHistoryAnalyzer, keywordsAnalyzer } from "./llm/client";
 import { Conversation } from "./internal/types";
 import fs from "fs";
+import { formatKeywords } from "./internal/utils";
 
 dotenv.config({ path: ".env" });
 
@@ -57,10 +58,7 @@ app.get("/keywords", (_req: express.Request, res: express.Response) => {
   const keywords = fs.readFileSync("keywords.txt", "utf8");
 
   res.json({
-    data: keywords
-      .split("\n")
-      .map((keyword) => keyword.replace(/^"|"$/g, ""))
-      .filter((keyword) => keyword !== ""),
+    data: formatKeywords(keywords),
     success: true,
   });
 });
