@@ -2,16 +2,23 @@ import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
 import { chatHistoryAnalyzer } from "./llm/client";
-import { conversation } from "./internal/conversation";
 import { Conversation } from "./internal/types";
-// import fs from "fs";
-// Load environment variables
+
 dotenv.config({ path: ".env" });
 
+const PORT = process.env["PORT"] || 4770;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use((_req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 app.get("/", (req: express.Request, res: express.Response) => {
   res.send("Hello World");
@@ -38,8 +45,8 @@ app.post("/analyze", async (req: express.Request, res: express.Response) => {
   });
 });
 
-app.listen(5000, () => {
-  console.log("Server is running on port 5000");
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 // Handle graceful shutdown
