@@ -34,9 +34,14 @@ Please return your answer in the following JSON format:
     "did_disengage": true | false,
     "reason": "<optional explanation>"
   },
-  "agent_improvement_recommendations": "<optional suggestions>"
-  "expected_steps": "<number>",
-  "actual_steps": "<number>"
+  "agent_improvement_recommendations": "<optional suggestions>",
+  "success": true | false,
+  "expected_steps": <number>,
+  "actual_steps": <number>,
+  "confidence_score": <percentage from 0 to 100>,
+  "friction_points": {
+    "count": <number>,
+    "descriptions": ["<brief summary of each friction point>"]
+  }
 }
-
 `;

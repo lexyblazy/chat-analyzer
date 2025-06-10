@@ -25,7 +25,7 @@ app.get("/", (req: express.Request, res: express.Response) => {
 });
 
 app.post("/analyze", async (req: express.Request, res: express.Response) => {
-  if (!req.body.conversation || req.body.conversation.length === 0) {
+  if (!req.body?.conversation || req.body.conversation.length === 0) {
     res.status(400).json({
       data: null,
       success: false,
