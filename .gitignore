@@ -93,8 +93,8 @@ jspm_packages/
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Thumbs.db 
+Thumbs.db
 
-
-# example responses
+# example responses and intents
 responses/
+intents/

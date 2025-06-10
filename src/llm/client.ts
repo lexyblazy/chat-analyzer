@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { prompt } from "./prompt";
+import { keywordsPrompt, summaryPrompt } from "./prompt";
 import { formatConversation } from "../internal/utils";
 import { Conversation } from "../internal/types";
 import dotenv from "dotenv";
@@ -24,6 +24,24 @@ interface ChatHistoryAnalyzerResponse {
   actual_steps: number;
 }
 
+export const keywordsAnalyzer = async (text: string) => {
+  const response = await client.chat.completions.create({
+    model: "gpt-4o",
+    messages: [
+      { role: "system", content: keywordsPrompt },
+      {
+        role: "user",
+        content: text,
+      },
+    ],
+    response_format: {
+      type: "text",
+    },
+  });
+
+  return response;
+};
+
 export const chatHistoryAnalyzer = async (
   conversation: Conversation[]
 ): Promise<ChatHistoryAnalyzerResponse> => {
@@ -32,7 +50,7 @@ export const chatHistoryAnalyzer = async (
     messages: [
       {
         role: "system",
-        content: prompt,
+        content: summaryPrompt,
       },
       {
         role: "user",

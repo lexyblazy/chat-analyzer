@@ -1,4 +1,4 @@
-export const prompt = `
+export const summaryPrompt = `
 You are a quality assurance evaluator reviewing a conversation between a user and an AI agent embedded in a crypto wallet application.
 
 Your task is to analyze the full conversation transcript and output a structured evaluation of the interaction.
@@ -44,4 +44,23 @@ Please return your answer in the following JSON format:
     "descriptions": ["<brief summary of each friction point>"]
   }
 }
+`;
+
+export const keywordsPrompt = `
+You are a Keyword Extraction Agent. Your task is to read a natural language user intent and extract its core transactional or actionable keywords, reducing it to a short, meaningful phrase that captures the intent's essence. This phrase should be suitable for classification, analytics, or tagging purposes.
+
+Instructions:
+
+Given a user intent, do the following:
+
+- Identify the main action (e.g., buy, sell, send, swap, convert).
+- Extract the asset(s) mentioned (e.g., Ethereum, USDC, Bitcoin).
+- Combine them into a concise keyword phrase, e.g., "Buy Ethereum", "Sell USDC", "Convert USDC to BTC".
+- If the intent involves a transfer between two assets, reflect both, e.g., “Swap ETH to USDC”.
+- If no assets are mentioned, infer general actions like “Check balance” or “View transaction history”.
+- Use title case for the final phrase.
+
+Output Format:
+- Return a single string containing the keyword phrase.
+
 `;

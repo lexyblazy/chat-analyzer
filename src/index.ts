@@ -1,8 +1,9 @@
 import cors from "cors";
 import express from "express";
 import dotenv from "dotenv";
-import { chatHistoryAnalyzer } from "./llm/client";
+import { chatHistoryAnalyzer, keywordsAnalyzer } from "./llm/client";
 import { Conversation } from "./internal/types";
+import fs from "fs";
 
 dotenv.config({ path: ".env" });
 
@@ -43,9 +44,28 @@ app.post("/analyze", async (req: express.Request, res: express.Response) => {
     data: result,
     success: true,
   });
+
+  const keywordsAnalysis = await keywordsAnalyzer(result.user_intent);
+
+  fs.appendFileSync(
+    "keywords.txt",
+    keywordsAnalysis.choices[0]?.message.content + "\n"
+  );
 });
 
-app.listen(PORT, () => {
+app.get("/keywords", (_req: express.Request, res: express.Response) => {
+  const keywords = fs.readFileSync("keywords.txt", "utf8");
+
+  res.json({
+    data: keywords
+      .split("\n")
+      .map((keyword) => keyword.replace(/^"|"$/g, ""))
+      .filter((keyword) => keyword !== ""),
+    success: true,
+  });
+});
+
+app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
