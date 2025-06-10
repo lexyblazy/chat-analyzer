@@ -25,7 +25,6 @@ Please complete the following analysis:
 
 Please return your answer in the following JSON format:
 
-
 {
   "user_intent": "<summary>",
   "agent_understanding": "<assessment>",
